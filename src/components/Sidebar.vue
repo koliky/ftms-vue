@@ -1,0 +1,47 @@
+<template>
+  <div class="sidebar">
+    <nav class="sidebar-nav">
+      <div slot="header"></div>
+      <ul class="nav">
+        <li class="nav-item">
+          <router-link to="/dashboard" class="nav-link">
+            <i class="icon-speedometer"></i> Dashboard
+            <span class="badge badge-pill badge-primary">NEW</span>
+          </router-link>
+        </li>
+        <li class="nav-item nav-dropdown">
+          <div class="nav-link nav-dropdown-toggle" @click="handleClick"><i class="icon-wrench"></i> Admin only</div>
+          <ul class="nav-dropdown-items">
+            <li class="nav-item">
+              <router-link to="/admin/dashboard" class="nav-link">
+                <i class="icon-plus"></i> Admin Dashboard
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/admin/createuser" class="nav-link">
+                <i class="icon-plus"></i> Create User
+              </router-link>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</template>
+
+<script>
+export default {
+  methods: {
+    handleClick (e) {
+      e.preventDefault()
+      e.target.parentElement.classList.toggle('open')
+    }
+  }
+}
+</script>
+
+<style lang="css">
+  .nav-link {
+    cursor:pointer;
+  }
+</style>

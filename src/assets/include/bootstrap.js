@@ -1,0 +1,8 @@
+import './jquery'
+import './tether'
+import './popper'
+import 'font-awesome/css/font-awesome.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.min'
+import 'fullcalendar/dist/fullcalendar.min.css'
+import 'fullcalendar/dist/fullcalendar.min.js'
