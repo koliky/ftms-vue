@@ -9,7 +9,7 @@
             <span class="badge badge-pill badge-primary">NEW</span>
           </router-link>
         </li>
-        <li class="nav-item nav-dropdown">
+        <li class="nav-item nav-dropdown" v-if="admin">
           <div class="nav-link nav-dropdown-toggle" @click="handleClick"><i class="icon-wrench"></i> Admin only</div>
           <ul class="nav-dropdown-items">
             <li class="nav-item">
@@ -31,6 +31,21 @@
 
 <script>
 export default {
+  data () {
+    return {
+      rolse: localStorage.getItem('roles'),
+      admin: false,
+      user: false
+    }
+  },
+  mounted () {
+    if (this.rolse.indexOf('User') >= 0) {
+      this.user = true
+    }
+    if (this.rolse.indexOf('Admin') >= 0) {
+      this.admin = true
+    }
+  },
   methods: {
     handleClick (e) {
       e.preventDefault()

@@ -44,6 +44,9 @@
 </template>
 
 <script>
+import { SERVER_URL } from '../../config.js'
+import axios from 'axios'
+
 export default {
   data () {
     return {
@@ -54,12 +57,30 @@ export default {
   },
   methods: {
     login () {
-      if (this.username === 'apichat' && this.password === 'password') {
-        this.$router.push('/')
+      const headers = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
-      this.errorMessage = true
-      this.username = ''
-      this.password = ''
+      const data = {
+        username: this.username,
+        password: this.password
+      }
+      axios.post(SERVER_URL + 'security/login', data, headers)
+        .then(response => {
+          const resData = response.data
+          localStorage.setItem('onLogin', true)
+          localStorage.setItem('token', resData.token)
+          localStorage.setItem('username', resData.username)
+          localStorage.setItem('roles', resData.roles)
+          this.$router.push('/')
+        })
+        .catch(error => {
+          console.log(JSON.stringify(error.response.data))
+          this.errorMessage = true
+          this.username = ''
+          this.password = ''
+        })
     }
   },
   computed: {

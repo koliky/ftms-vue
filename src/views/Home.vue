@@ -19,7 +19,7 @@
             <div class="row user-detail">
               <div class="col-lg-12 col-sm-12 col-12">
                 <img src="../assets/img/avatars/5.jpg" alt="Profile" class="rounded-circle img-thumbnail">
-                <h5>Jesica Addison [ID: 90616]</h5>
+                <h5>Jesica Addison [ID: {{ username }}]</h5>
                 <p>MIS Department, System Engineer position</p>
                 <p><i class="fa fa-map-marker" aria-hidden="true"></i> New Jersey, USA.</p>
                 <p>Email: jesicaa@foamtecintl.com</p>
@@ -47,7 +47,22 @@
 </template>
 
 <script>
+import { SERVER_URL } from '../config.js'
+import axios from 'axios'
+
 export default {
+  data () {
+    return {
+      username: '',
+      firstName: '',
+      lastName: '',
+      department: '',
+      position: '',
+      address: '',
+      email: '',
+      telephone: ''
+    }
+  },
   mounted () {
     $('#calendar').fullCalendar({
       firstDay: 1,
@@ -62,6 +77,27 @@ export default {
       slotEventOverlap: false,
       timeFormat: 'HH:mm'
     })
+    const headers = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    }
+    const data = {
+      username: localStorage.getItem('username')
+    }
+    axios.post(SERVER_URL + 'api/user/getbyusername', data, headers)
+      .then(response => {
+        const resData = response.data
+        if (resData.changePassword === 'change') {
+          this.$router.push('/')
+        } else {
+          this.username = resData.username
+        }
+      })
+      .catch(error => {
+        console.log(JSON.stringify(error.response.data))
+      })
   }
 }
 </script>

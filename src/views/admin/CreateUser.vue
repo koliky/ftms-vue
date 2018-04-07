@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-12">
         <basic-form formName="Create User" @submitForm="createUser">
-          <text-field fieldName="Empolyee ID" id="empId" v-model="user.userID"></text-field>
+          <text-field fieldName="Empolyee ID" id="empId" v-model="user.employeeId"></text-field>
           <text-field fieldName="First Name" id="firstNameId" v-model="user.firstName"></text-field>
           <text-field fieldName="Last Name" id="lastNameId" v-model="user.lastName"></text-field>
           <radio-field fieldName="Sex" name="sex" :items="sexItems" @optionSelected="setDataSex"></radio-field>
@@ -23,6 +23,8 @@ import TextField from '@/components/form/TextField'
 import RadioField from '@/components/form/RadioField'
 import SelectField from '@/components/form/SelectField'
 import Checkbox from '@/components/form/Checkbox'
+import { SERVER_URL } from '../../config.js'
+import axios from 'axios'
 
 export default {
   components: {
@@ -40,6 +42,7 @@ export default {
       ],
       departments: [
         'Please select',
+        'MIS',
         'HR',
         'Production',
         'Engineer',
@@ -61,7 +64,7 @@ export default {
         'Admin'
       ],
       user: {
-        userID: '',
+        employeeId: '',
         firstName: '',
         lastName: '',
         sex: 'Male',
@@ -86,7 +89,20 @@ export default {
       this.user.roles = val
     },
     createUser () {
+      const headers = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      }
       console.log(JSON.stringify(this.user))
+      axios.post(SERVER_URL + 'api/admin/createuser', this.user, headers)
+        .then(response => {
+          console.log(response.data)
+        })
+        .catch(error => {
+          console.log(error.data)
+        })
     }
   }
 }

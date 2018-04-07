@@ -13,7 +13,7 @@
       <li class="nav-item dropdown">
         <a href="#" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false" class="nav-link dropdown-toggle">
           <img src="../assets/img/avatars/5.jpg" alt="admin@bootstrapmaster.com" class="img-avatar">
-          <span class="d-md-down-none">Jesica</span>
+          <span class="d-md-down-none">{{username}}</span>
         </a>
         <div role="menu" class="dropdown-menu dropdown-menu-right">
           <div class="dropdown-header text-center">
@@ -32,9 +32,9 @@
           <a href="#" class="dropdown-item">
             <i class="fa fa-shield"></i> Lock Account
           </a>
-          <router-link to="/pages/login" class="dropdown-item">
+          <a href="#" class="dropdown-item" @click="logOut">
             <i class="fa fa-lock"></i> Logout
-          </router-link>
+          </a>
         </div>
       </li>
     </ul>
@@ -44,7 +44,19 @@
 
 <script>
 export default {
+  data () {
+    return {
+      username: ''
+    }
+  },
+  mounted () {
+    this.username = localStorage.getItem('username')
+  },
   methods: {
+    logOut () {
+      localStorage.clear()
+      this.$router.push('/pages/login')
+    },
     sidebarToggle (e) {
       e.preventDefault()
       document.body.classList.toggle('sidebar-hidden')

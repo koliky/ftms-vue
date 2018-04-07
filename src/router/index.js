@@ -28,14 +28,38 @@ export default new Router({
         {
           path: 'admin/dashboard',
           name: 'Admin DashBoard',
-          component: AdminDashboard
+          component: AdminDashboard,
+          beforeEnter (to, from, next) {
+            const roles = localStorage.getItem('roles')
+            if (roles.indexOf('Admin') >= 0) {
+              next()
+            } else {
+              next('/pages/404')
+            }
+          }
         },
         {
           path: 'admin/createuser',
           name: 'Admin CreateUser',
-          component: CreateUser
+          component: CreateUser,
+          beforeEnter (to, from, next) {
+            const roles = localStorage.getItem('roles')
+            if (roles.indexOf('Admin') >= 0) {
+              next()
+            } else {
+              next('/pages/404')
+            }
+          }
         }
-      ]
+      ],
+      beforeEnter (to, from, next) {
+        const onLogin = localStorage.getItem('onLogin')
+        if (onLogin) {
+          next()
+        } else {
+          next('/pages/login')
+        }
+      }
     },
     {
       path: '/pages',
@@ -51,9 +75,21 @@ export default new Router({
         {
           path: 'login',
           name: 'Login',
-          component: Login
+          component: Login,
+          beforeEnter (to, from, next) {
+            const onLogin = localStorage.getItem('onLogin')
+            if (onLogin) {
+              next('/')
+            } else {
+              next()
+            }
+          }
         }
       ]
+    },
+    {
+      path: '*',
+      redirect: '/pages/404'
     }
   ]
 })
