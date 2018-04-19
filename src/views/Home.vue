@@ -18,14 +18,14 @@
             </div>
             <div class="row user-detail">
               <div class="col-lg-12 col-sm-12 col-12">
-                <img src="../assets/img/avatars/5.jpg" alt="Profile" class="rounded-circle img-thumbnail">
-                <h5>Jesica Addison [ID: {{ username }}]</h5>
-                <p>MIS Department, System Engineer position</p>
-                <p><i class="fa fa-map-marker" aria-hidden="true"></i> New Jersey, USA.</p>
-                <p>Email: jesicaa@foamtecintl.com</p>
-                <p>Tel: 0123456789</p>
+                <img :src="profile" alt="Profile" class="rounded-circle img-thumbnail">
+                <h5>{{ firstName }} {{ lastName }} [ID: {{ username }}]</h5>
+                <p>{{ department }} Department</p>
+                <p><i class="fa fa-map-marker" aria-hidden="true"></i> {{ address }}</p>
+                <p>Email: {{ email }}</p>
+                <p>Tel: {{ telephone }}</p>
                 <hr>
-                <a href="#" class="btn btn-success btn-sm">Edit Profile</a>
+                <router-link to="/updateprofile" class="btn btn-success btn-sm">Update Profile</router-link>
                 <a href="#" class="btn btn-info btn-sm">Detail Profile</a>
                 <hr>
                 <span>Foamtec international factory</span>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { SERVER_URL } from '../config.js'
+import { SERVER_URL } from '../config'
 import axios from 'axios'
 
 export default {
@@ -57,10 +57,10 @@ export default {
       firstName: '',
       lastName: '',
       department: '',
-      position: '',
       address: '',
       email: '',
-      telephone: ''
+      telephone: '',
+      profile: SERVER_URL + 'api/user/get-image-profile/' + localStorage.getItem('username')
     }
   },
   mounted () {
@@ -83,20 +83,28 @@ export default {
         'Authorization': 'Bearer ' + localStorage.getItem('token')
       }
     }
-    const data = {
-      username: localStorage.getItem('username')
-    }
+    const data = {}
     axios.post(SERVER_URL + 'api/user/getbyusername', data, headers)
       .then(response => {
         const resData = response.data
         if (resData.changePassword === 'change') {
-          this.$router.push('/')
+          this.$router.push('/updateprofile')
         } else {
           this.username = resData.username
+          this.firstName = resData.firstName
+          this.lastName = resData.lastName
+          this.department = resData.department
+          this.address = resData.address
+          this.email = resData.email
+          this.telephone = resData.phoneNumber
         }
       })
       .catch(error => {
-        console.log(JSON.stringify(error.response.data))
+        const dataErr = error.response.data
+        if (dataErr.message.indexOf('JWT expired') >= 0) {
+          localStorage.clear()
+          this.$router.push('/pages/login')
+        }
       })
   }
 }

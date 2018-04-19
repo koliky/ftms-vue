@@ -16,6 +16,7 @@
                 <button class="btn btn-info" type="button">Search</button>
               </span>
             </div>
+            <router-link to="/" class="btn btn-link px-0">Home</router-link>
           </div>
         </div>
       </transition>

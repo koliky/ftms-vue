@@ -12,12 +12,7 @@
                 <label class="col-form-label col-sm-3" for="employeeId"><span>Empolyee ID</span></label>
                 <div class="col-sm-9">
                   <input type="text" id="employeeId" v-model="user.employeeId"
-                  placeholder="Enter Empolyee ID" class="form-control"
-                  @blur="checkEmpId()"
-                  :class="{ 'is-invalid': validateInput.idDuplicate }">
-                  <div class="invalid-feedback">
-                    Empolyee ID is duplicate.
-                  </div>
+                  placeholder="Enter Empolyee ID" class="form-control" disabled="true">
                 </div>
               </div>
 
@@ -25,7 +20,7 @@
                 <label class="col-form-label col-sm-3" for="firstNameId"><span>First Name</span></label>
                 <div class="col-sm-9">
                   <input type="text" id="firstNameId" v-model="user.firstName"
-                  placeholder="Enter First Name" class="form-control">
+                  placeholder="Enter First Name" class="form-control" disabled="true">
                 </div>
               </div>
 
@@ -33,7 +28,7 @@
                 <label class="col-form-label col-sm-3" for="lastNameId"><span>Last Name</span></label>
                 <div class="col-sm-9">
                   <input type="text" id="lastNameId" v-model="user.lastName"
-                  placeholder="Enter Last Name" class="form-control">
+                  placeholder="Enter Last Name" class="form-control" disabled="true">
                 </div>
               </div>
 
@@ -43,13 +38,13 @@
                   <div role="radiogroup" class="custom-controls-stacked">
                     <label class="custom-control custom-radio">
                       <input type="radio" name="sex" autocomplete="off" class="custom-control-input"
-                      v-model="user.sex" value="Male">
+                      v-model="user.sex" value="Male" disabled="true">
                       <span aria-hidden="true" class="custom-control-indicator"></span>
                       <span class="custom-control-description">Male</span>
                     </label>
                     <label class="custom-control custom-radio">
                       <input type="radio" name="sex" autocomplete="off" class="custom-control-input"
-                      v-model="user.sex" value="Female">
+                      v-model="user.sex" value="Female" disabled="true">
                       <span aria-hidden="true" class="custom-control-indicator"></span>
                       <span class="custom-control-description">Female</span>
                     </label>
@@ -60,7 +55,7 @@
               <div role="group" class="form-group row">
                 <label class="col-form-label col-sm-3"><span>Department</span></label>
                 <div class="col-sm-9">
-                  <select class="form-control" v-model="user.department">
+                  <select class="form-control" v-model="user.department" disabled="true">
                     <option value="Please select">Please select</option>
                     <option value="MIS">MIS</option>
                     <option value="HR">HR</option>
@@ -83,19 +78,19 @@
                   <div role="radiogroup" class="custom-controls-stacked">
                     <label class="custom-control custom-radio">
                       <input type="radio" name="shift" autocomplete="off" class="custom-control-input"
-                      v-model="user.shift" value="A">
+                      v-model="user.shift" value="A" disabled="true">
                       <span aria-hidden="true" class="custom-control-indicator"></span>
                       <span class="custom-control-description">A</span>
                     </label>
                     <label class="custom-control custom-radio">
                       <input type="radio" name="shift" autocomplete="off" class="custom-control-input"
-                      v-model="user.shift" value="B">
+                      v-model="user.shift" value="B" disabled="true">
                       <span aria-hidden="true" class="custom-control-indicator"></span>
                       <span class="custom-control-description">B</span>
                     </label>
                     <label class="custom-control custom-radio">
                       <input type="radio" name="shift" autocomplete="off" class="custom-control-input"
-                      v-model="user.shift" value="Office">
+                      v-model="user.shift" value="Office" disabled="true">
                       <span aria-hidden="true" class="custom-control-indicator"></span>
                       <span class="custom-control-description">Office</span>
                     </label>
@@ -107,7 +102,7 @@
                 <label class="col-form-label col-sm-3" for="startDateId"><span>Start Work</span></label>
                 <div class="col-sm-9">
                   <input type="text" id="startDateId" v-model="user.startDate"
-                  placeholder="dd/MM/yyyy" class="form-control">
+                  placeholder="dd/MM/yyyy" class="form-control" disabled="true">
                 </div>
               </div>
 
@@ -116,14 +111,14 @@
                 <div class="col-sm-9">
                   <label class="custom-checkbox custom-control">
                     <input type="checkbox" name="roles" autocomplete="off" class="custom-control-input"
-                    value="User" v-model="user.roles">
+                    value="User" v-model="user.roles" disabled="true">
                     <span aria-hidden="true" class="custom-control-indicator"></span>
                     <span class="custom-control-description">User</span>
                   </label>
                   <br>
                   <label class="custom-checkbox custom-control">
                     <input type="checkbox" name="roles" autocomplete="off" class="custom-control-input"
-                    value="Admin" v-model="user.roles">
+                    value="Admin" v-model="user.roles" disabled="true">
                     <span aria-hidden="true" class="custom-control-indicator"></span>
                     <span class="custom-control-description">Admin</span>
                   </label>
@@ -131,8 +126,6 @@
               </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary btn-sm" :disabled="!validateBtn"><i class="fa fa-dot-circle-o"></i> Submit</button>
-                <button type="reset" class="btn btn-danger btn-sm"><i class="fa fa-ban"></i> Reset</button>
             </div>
           </div>
         </form>
@@ -152,35 +145,41 @@ export default {
         employeeId: '',
         firstName: '',
         lastName: '',
-        sex: 'Male',
+        sex: '',
         department: 'Please select',
         shift: 'A',
         startDate: '',
         roles: []
-      },
-      validateInput: {
-        idDuplicate: false
       }
     }
+  },
+  mounted () {
+    this.setDefault()
   },
   methods: {
-    checkEmpId () {
+    setDefault () {
       const headers = {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       }
-      let dataCheck = {
-        employeeId: this.user.employeeId
+      const data = {
+        id: this.$route.params.id
       }
-      axios.post(SERVER_URL + 'api/admin/validateempid', dataCheck, headers)
+      axios.post(SERVER_URL + 'api/admin/findbyid', data, headers)
         .then(response => {
-          const dataRest = response.data
-          if (dataRest.employeeId === this.user.employeeId) {
-            this.validateInput.idDuplicate = true
-          } else {
-            this.validateInput.idDuplicate = false
+          const dataRes = response.data
+          this.user.employeeId = dataRes.employeeId
+          this.user.firstName = dataRes.firstName
+          this.user.lastName = dataRes.lastName
+          this.user.sex = dataRes.sex
+          this.user.department = dataRes.department
+          this.user.shift = dataRes.shift
+          this.user.startDate = dataRes.startDate
+          let i = 0
+          for (i = 0; i < dataRes.appRoles.length; i++) {
+            this.user.roles.push(dataRes.appRoles[i].roleName)
           }
         })
         .catch(error => {
@@ -190,33 +189,6 @@ export default {
             this.$router.push('/pages/login')
           }
         })
-    },
-    createUser () {
-      const headers = {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-      }
-      axios.post(SERVER_URL + 'api/admin/createuser', this.user, headers)
-        .then(response => {
-          this.$router.push('/admin/detailmember/' + response.data.id)
-        })
-        .catch(error => {
-          const dataErr = error.response.data
-          if (dataErr.message.indexOf('JWT expired') >= 0) {
-            localStorage.clear()
-            this.$router.push('/pages/login')
-          }
-        })
-    }
-  },
-  computed: {
-    validateBtn () {
-      return this.user.employeeId !== '' && this.user.firstName !== '' &&
-      this.user.lastName !== '' && this.user.department !== 'Please select' &&
-      this.user.roles.length !== 0 && this.user.startDate !== '' &&
-      (this.validateInput.idDuplicate !== true)
     }
   }
 }

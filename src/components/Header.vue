@@ -12,7 +12,7 @@
       </li>
       <li class="nav-item dropdown">
         <a href="#" aria-haspopup="true" data-toggle="dropdown" aria-expanded="false" class="nav-link dropdown-toggle">
-          <img src="../assets/img/avatars/5.jpg" alt="admin@bootstrapmaster.com" class="img-avatar">
+          <img :src="profile" alt="admin@bootstrapmaster.com" class="img-avatar">
           <span class="d-md-down-none">{{username}}</span>
         </a>
         <div role="menu" class="dropdown-menu dropdown-menu-right">
@@ -43,10 +43,13 @@
 </template>
 
 <script>
+import { SERVER_URL } from '../config'
+
 export default {
   data () {
     return {
-      username: ''
+      username: '',
+      profile: SERVER_URL + 'api/user/get-image-profile/' + localStorage.getItem('username')
     }
   },
   mounted () {

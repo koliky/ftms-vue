@@ -4,9 +4,12 @@ import FoamtecTemplate from '@/containers/FoamtecTemplate'
 import Home from '@/views/Home'
 import CreateUser from '@/views/admin/CreateUser'
 import AdminDashboard from '@/views/admin/AdminDashboard'
+import MemberList from '@/views/admin/MemberList'
+import DetailMember from '@/views/admin/DetailMember'
 import PageTemplate from '@/containers/PageTemplate'
 import Login from '@/views/pages/Login'
 import Page404 from '@/views/pages/Page404'
+import UpdateProfile from '@/views/profile/UpdateProfile'
 
 Vue.use(Router)
 
@@ -26,6 +29,11 @@ export default new Router({
           component: Home
         },
         {
+          path: 'updateprofile',
+          name: 'Update Profile',
+          component: UpdateProfile
+        },
+        {
           path: 'admin/dashboard',
           name: 'Admin DashBoard',
           component: AdminDashboard,
@@ -42,6 +50,32 @@ export default new Router({
           path: 'admin/createuser',
           name: 'Admin CreateUser',
           component: CreateUser,
+          beforeEnter (to, from, next) {
+            const roles = localStorage.getItem('roles')
+            if (roles.indexOf('Admin') >= 0) {
+              next()
+            } else {
+              next('/pages/404')
+            }
+          }
+        },
+        {
+          path: 'admin/memberlist',
+          name: 'Member List',
+          component: MemberList,
+          beforeEnter (to, from, next) {
+            const roles = localStorage.getItem('roles')
+            if (roles.indexOf('Admin') >= 0) {
+              next()
+            } else {
+              next('/pages/404')
+            }
+          }
+        },
+        {
+          path: 'admin/detailmember/:id',
+          name: 'Member Detail',
+          component: DetailMember,
           beforeEnter (to, from, next) {
             const roles = localStorage.getItem('roles')
             if (roles.indexOf('Admin') >= 0) {

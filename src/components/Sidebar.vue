@@ -22,6 +22,11 @@
                 <i class="icon-plus"></i> Create User
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/admin/memberlist" class="nav-link">
+                <i class="icon-plus"></i> Member List
+              </router-link>
+            </li>
           </ul>
         </li>
       </ul>
