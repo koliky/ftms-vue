@@ -49,7 +49,7 @@ export default {
   data () {
     return {
       username: '',
-      profile: SERVER_URL + 'api/user/get-image-profile/' + localStorage.getItem('username')
+      profile: SERVER_URL + 'api/user/imageprofile/' + localStorage.getItem('username')
     }
   },
   mounted () {

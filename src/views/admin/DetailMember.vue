@@ -170,16 +170,16 @@ export default {
       axios.post(SERVER_URL + 'api/admin/findbyid', data, headers)
         .then(response => {
           const dataRes = response.data
-          this.user.employeeId = dataRes.employeeId
-          this.user.firstName = dataRes.firstName
-          this.user.lastName = dataRes.lastName
-          this.user.sex = dataRes.sex
-          this.user.department = dataRes.department
-          this.user.shift = dataRes.shift
-          this.user.startDate = dataRes.startDate
+          this.user.employeeId = dataRes.EmployeeID
+          this.user.firstName = dataRes.FirstName
+          this.user.lastName = dataRes.LastName
+          this.user.sex = dataRes.Sex
+          this.user.department = dataRes.Department
+          this.user.shift = dataRes.Shift
+          this.user.startDate = dataRes.StartDate
           let i = 0
-          for (i = 0; i < dataRes.appRoles.length; i++) {
-            this.user.roles.push(dataRes.appRoles[i].roleName)
+          for (i = 0; i < dataRes.AppRoles.length; i++) {
+            this.user.roles.push(dataRes.AppRoles[i])
           }
         })
         .catch(error => {
