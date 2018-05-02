@@ -60,7 +60,7 @@ export default {
       address: '',
       email: '',
       telephone: '',
-      profile: SERVER_URL + 'api/user/get-image-profile/' + localStorage.getItem('username')
+      profile: SERVER_URL + 'api/user/imageprofile/' + localStorage.getItem('username')
     }
   },
   mounted () {
@@ -84,24 +84,25 @@ export default {
       }
     }
     const data = {}
-    axios.post(SERVER_URL + 'api/user/getbyusername', data, headers)
+    axios.post(SERVER_URL + 'api/user/getdatauser', data, headers)
       .then(response => {
         const resData = response.data
-        if (resData.changePassword === 'change') {
+        if (resData.Status === 'ADMIN_CREATE') {
           this.$router.push('/updateprofile')
         } else {
-          this.username = resData.username
-          this.firstName = resData.firstName
-          this.lastName = resData.lastName
-          this.department = resData.department
-          this.address = resData.address
-          this.email = resData.email
-          this.telephone = resData.phoneNumber
+          this.username = resData.Username
+          this.firstName = resData.FirstName
+          this.lastName = resData.LastName
+          this.department = resData.Department
+          this.address = resData.Address
+          this.email = resData.Email
+          this.telephone = resData.PhoneNumber
         }
       })
       .catch(error => {
         const dataErr = error.response.data
-        if (dataErr.message.indexOf('JWT expired') >= 0) {
+        console.log(dataErr)
+        if (dataErr.message.indexOf('JWT_invalid') >= 0) {
           localStorage.clear()
           this.$router.push('/pages/login')
         }

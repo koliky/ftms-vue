@@ -177,7 +177,7 @@ export default {
       axios.post(SERVER_URL + 'api/admin/validateempid', dataCheck, headers)
         .then(response => {
           const dataRest = response.data
-          if (dataRest.employeeId === this.user.employeeId) {
+          if (dataRest.EmployeeID === this.user.employeeId) {
             this.validateInput.idDuplicate = true
           } else {
             this.validateInput.idDuplicate = false
@@ -185,7 +185,7 @@ export default {
         })
         .catch(error => {
           const dataErr = error.response.data
-          if (dataErr.message.indexOf('JWT expired') >= 0) {
+          if (dataErr.message.indexOf('JWT_invalid') >= 0) {
             localStorage.clear()
             this.$router.push('/pages/login')
           }
@@ -204,7 +204,7 @@ export default {
         })
         .catch(error => {
           const dataErr = error.response.data
-          if (dataErr.message.indexOf('JWT expired') >= 0) {
+          if (dataErr.message.indexOf('JWT_invalid') >= 0) {
             localStorage.clear()
             this.$router.push('/pages/login')
           }
