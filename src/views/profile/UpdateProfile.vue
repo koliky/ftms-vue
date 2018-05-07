@@ -124,6 +124,9 @@ export default {
         this.user.employeeId = resData.EmployeeID
         this.user.firstName = resData.FirstName
         this.user.lastName = resData.LastName
+        this.user.email = resData.Email
+        this.user.address = resData.Address
+        this.user.phone = resData.PhoneNumber
       })
       .catch(error => {
         const dataErr = error.response.data
